@@ -5,6 +5,7 @@ A comprehensive web application for cricket scoring, match management, and tourn
 ## Features
 
 ### Core Features
+
 - **Match Setup**: Support for T20, ODI, Test, and Custom formats
 - **Live Scoring**: Real-time score tracking with ball-by-ball updates
 - **Player Management**: Complete team and player tracking
@@ -13,6 +14,7 @@ A comprehensive web application for cricket scoring, match management, and tourn
 - **Awards System**: Automatic calculation of match awards
 
 ### Advanced Features
+
 - **Tournament Mode**: Create and manage multi-team tournaments
 - **Select Batter**: Choose opening batsmen and new batsmen after wickets
 - **Change Batsman**: Ability to change batsmen before they face a ball
@@ -47,9 +49,11 @@ A comprehensive web application for cricket scoring, match management, and tourn
 ## Testing
 
 ### Manual Testing
+
 Open `regression_test_suite.html` for comprehensive manual test cases.
 
 ### Automated Testing
+
 Open `execute_regression_tests.html` to run automated tests.
 
 ## Browser Support
@@ -62,6 +66,7 @@ Open `execute_regression_tests.html` to run automated tests.
 ## Local Storage
 
 The app uses browser's localStorage to:
+
 - Auto-save active matches
 - Store match history
 - Preserve tournament data

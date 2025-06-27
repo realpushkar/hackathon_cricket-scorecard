@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Regression Tests - Cricket Scorecard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a472a;
+            text-align: center;
+        }
+        .console-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 600px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        .run-button {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 40px;
+            background: #1a472a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .run-button:hover {
+            background: #245a37;
+        }
+        .run-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .test-iframe {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+        }
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        .pass { color: #28a745; }
+        .fail { color: #dc3545; }
+        .pending { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🏏 Cricket Scorecard - Automated Regression Tests</h1>
+        
+        <div class="status" id="status">Ready to run tests</div>
+        
+        <button class="run-button" id="runTests" onclick="runTests()">Run All Tests</button>
+        
+        <div class="console-output" id="console">
+            <div>Console output will appear here...</div>
+        </div>
+        
+        <iframe src="index.html" class="test-iframe" id="testFrame"></iframe>
+    </div>
+
+    <script>
+        const consoleOutput = document.getElementById('console');
+        const statusElement = document.getElementById('status');
+        const runButton = document.getElementById('runTests');
+        
+        // Override console.log to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function logToConsole(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            
+            if (type === 'error') {
+                div.style.color = '#f48771';
+            } else if (message.includes('✅')) {
+                div.style.color = '#4ec9b0';
+            } else if (message.includes('❌')) {
+                div.style.color = '#f48771';
+            } else if (message.includes('🏏') || message.includes('📋') || message.includes('📊')) {
+                div.style.color = '#dcdcaa';
+                div.style.fontWeight = 'bold';
+                div.style.marginTop = '10px';
+            }
+            
+            div.textContent = `[${timestamp}] ${message}`;
+            consoleOutput.appendChild(div);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logToConsole(args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            logToConsole(args.join(' '), 'error');
+        };
+        
+        async function runTests() {
+            runButton.disabled = true;
+            statusElement.textContent = 'Running tests...';
+            statusElement.className = 'status pending';
+            consoleOutput.innerHTML = '';
+            
+            // Wait for iframe to load
+            const iframe = document.getElementById('testFrame');
+            
+            iframe.onload = async function() {
+                try {
+                    // Get the iframe's window and document
+                    const iframeWindow = iframe.contentWindow;
+                    const iframeDocument = iframe.contentDocument;
+                    
+                    // Inject the test runner script
+                    const script = iframeDocument.createElement('script');
+                    script.textContent = `
+                        ${RegressionTestRunner.toString()}
+                        
+                        // Override console in iframe to send to parent
+                        const originalConsoleLog = console.log;
+                        const originalConsoleError = console.error;
+                        
+                        console.log = function(...args) {
+                            originalConsoleLog.apply(console, args);
+                            window.parent.postMessage({
+                                type: 'console',
+                                level: 'log',
+                                message: args.join(' ')
+                            }, '*');
+                        };
+                        
+                        console.error = function(...args) {
+                            originalConsoleError.apply(console, args);
+                            window.parent.postMessage({
+                                type: 'console',
+                                level: 'error',
+                                message: args.join(' ')
+                            }, '*');
+                        };
+                        
+                        // Run the tests
+                        (async function() {
+                            const runner = new RegressionTestRunner();
+                            await runner.runAllTests();
+                            
+                            // Send results back to parent
+                            window.parent.postMessage({
+                                type: 'results',
+                                results: runner.results
+                            }, '*');
+                        })();
+                    `;
+                    
+                    iframeDocument.head.appendChild(script);
+                    
+                } catch (error) {
+                    console.error('Error running tests:', error);
+                    statusElement.textContent = 'Error running tests';
+                    statusElement.className = 'status fail';
+                    runButton.disabled = false;
+                }
+            };
+            
+            // Listen for messages from iframe
+            window.addEventListener('message', function(event) {
+                if (event.data.type === 'console') {
+                    logToConsole(event.data.message, event.data.level);
+                } else if (event.data.type === 'results') {
+                    const results = event.data.results;
+                    const passRate = ((results.passed / results.total) * 100).toFixed(1);
+                    
+                    if (results.failed === 0) {
+                        statusElement.textContent = `✅ All ${results.total} tests passed! (${passRate}% success rate)`;
+                        statusElement.className = 'status pass';
+                    } else {
+                        statusElement.textContent = `⚠️ ${results.failed} of ${results.total} tests failed (${passRate}% success rate)`;
+                        statusElement.className = 'status fail';
+                    }
+                    
+                    runButton.disabled = false;
+                }
+            });
+            
+            // Reload iframe to run tests
+            iframe.src = iframe.src;
+        }
+        
+        // Include the test runner code
+        ${regression_test_runner.js}
+    </script>
+</body>
+</html>
