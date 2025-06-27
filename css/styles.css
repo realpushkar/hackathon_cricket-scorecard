@@ -1,0 +1,710 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: #1a472a;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+    border-radius: 8px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.match-info {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.navigation {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-btn.active {
+    background-color: white;
+    color: #1a472a;
+    border-color: white;
+}
+
+.nav-btn.btn-primary {
+    background-color: #28a745;
+    color: white;
+    font-weight: 600;
+    margin-left: 20px;
+    position: relative;
+    border-color: #28a745;
+}
+
+.nav-btn.btn-primary::before {
+    content: "➕ ";
+    margin-right: 5px;
+}
+
+.nav-btn.btn-primary:hover {
+    background-color: #218838;
+    border-color: #218838;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.section {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.section h2 {
+    color: #1a472a;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    outline: none;
+    border-color: #1a472a;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background-color: #1a472a;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #245a37;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.score-display {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.team-score {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.team-score h2 {
+    color: #1a472a;
+    margin-bottom: 10px;
+}
+
+.score-board {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #1a472a;
+}
+
+.runs {
+    font-size: 4rem;
+}
+
+.wickets, .overs {
+    font-size: 2rem;
+    color: #666;
+}
+
+.run-rate {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+.extras-info {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.extras-breakdown {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.extras-section {
+    padding: 10px 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.extras-section strong {
+    color: #333;
+}
+
+.current-batsmen, .current-bowler {
+    margin-bottom: 20px;
+}
+
+.current-batsmen h3, .current-bowler h3 {
+    color: #1a472a;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.batsman-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.batsman, .bowler-info {
+    background-color: white;
+    padding: 15px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.change-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1a472a;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.change-btn:hover {
+    opacity: 1;
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.batsman .name, .bowler-info .name {
+    font-weight: 600;
+    color: #333;
+}
+
+.batsman .stats, .bowler-info .figures {
+    color: #666;
+}
+
+.bowler-selection, .batsman-selection {
+    margin-top: 10px;
+}
+
+.bowler-selection button, .batsman-selection button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+}
+
+#bowlerSelect, #batterSelect {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.scoring-controls {
+    margin-top: 30px;
+}
+
+.scoring-controls h3 {
+    color: #1a472a;
+    margin-bottom: 15px;
+}
+
+.runs-buttons, .extras-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.run-btn, .extra-btn {
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.run-btn:hover, .extra-btn:hover {
+    background-color: #1a472a;
+    color: white;
+    border-color: #1a472a;
+}
+
+.wicket-section {
+    margin-bottom: 20px;
+}
+
+.over-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.over-info h4 {
+    color: #1a472a;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#scorecardContent {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.batting-card, .bowling-card {
+    margin-bottom: 30px;
+}
+
+.batting-card h3, .bowling-card h3 {
+    color: #1a472a;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #1a472a;
+    color: white;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+.match-history-item {
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border-left: 4px solid #1a472a;
+}
+
+.match-history-item h4 {
+    color: #1a472a;
+    margin-bottom: 10px;
+}
+
+.match-history-item p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.match-history-item .load-match {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.winning-team-text {
+    font-weight: bold;
+    color: #1a472a;
+    background-color: #fffacd;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.players-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+}
+
+.players-section h3 {
+    color: #1a472a;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.team-players {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.team-players h4 {
+    color: #1a472a;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.players-list {
+    display: grid;
+    gap: 8px;
+}
+
+.player-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.player-input:focus {
+    outline: none;
+    border-color: #1a472a;
+    background-color: #f9f9f9;
+}
+
+.player-input::placeholder {
+    color: #999;
+}
+
+.awards-section {
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+}
+
+.awards-section h3 {
+    color: #1a472a;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+.awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.award-item {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.award-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.award-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.award-item h4 {
+    color: #1a472a;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.award-winner {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.award-stats {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.match-result-section {
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.winner-announcement {
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.trophy-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.winner-announcement h2 {
+    color: #1a472a;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.winner-announcement p {
+    font-size: 1.3rem;
+    color: #666;
+}
+
+.winning-team-highlight {
+    background-color: #fffacd;
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Edit name styles */
+.player-name-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 6px;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+}
+
+.edit-btn:hover {
+    opacity: 1;
+}
+
+tr:hover .edit-btn {
+    opacity: 0.6;
+}
+
+.batsman-name-edit, .bowler-name-edit {
+    padding: 4px 8px;
+    border: 1px solid #1a5f3f;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 150px;
+}
+
+.batsman-name-display, .bowler-name-display {
+    cursor: text;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+    display: inline-block;
+}
+
+.batsman-name-display:hover, .bowler-name-display:hover {
+    background-color: #f0f8f4;
+}
+
+/* Ensure table cells don't prevent text selection */
+td {
+    user-select: auto;
+}
+
+.dismissal-text {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .score-board {
+        font-size: 2rem;
+    }
+    
+    .runs {
+        font-size: 3rem;
+    }
+    
+    .batsman-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .runs-buttons, .extras-buttons {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons .btn {
+        width: 100%;
+    }
+    
+    table {
+        font-size: 0.9rem;
+    }
+    
+    th, td {
+        padding: 8px;
+    }
+}

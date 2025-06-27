@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Scorecard Calculator</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cricket Scorecard Calculator</h1>
+            <div class="match-info" id="matchInfo"></div>
+            <div style="text-align: center; margin: 10px 0;">
+                <button class="btn btn-secondary" onclick="window.location.href='tournament.html'" style="background-color: #6c757d; color: white; padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer;">🏆 Tournament Mode</button>
+            </div>
+            <nav class="navigation" id="navigation" style="display:none;">
+                <button class="nav-btn" id="navSetup">Match Setup</button>
+                <button class="nav-btn" id="navScoring">Live Scoring</button>
+                <button class="nav-btn" id="navScorecard">Scorecard</button>
+                <button class="nav-btn" id="navHistory">Match History</button>
+                <button class="nav-btn btn-primary" id="navNewMatch">Start New Match</button>
+            </nav>
+        </header>
+
+        <main>
+            <div id="matchSetup" class="section">
+                <h2>Match Setup</h2>
+                <form id="matchSetupForm">
+                    <div class="form-group">
+                        <label>Match Format:</label>
+                        <select id="matchFormat" required>
+                            <option value="T20">T20 (20 overs)</option>
+                            <option value="ODI">ODI (50 overs)</option>
+                            <option value="Test">Test Match</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                        <input type="number" id="customOvers" placeholder="Custom overs" min="1" style="display:none;">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Team 1:</label>
+                            <input type="text" id="team1Name" placeholder="Team 1 Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Team 2:</label>
+                            <input type="text" id="team2Name" placeholder="Team 2 Name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Toss Won By:</label>
+                        <select id="tossWinner" required>
+                            <option value="">Select Team</option>
+                        </select>
+                        <select id="tossDecision" required>
+                            <option value="">Select Decision</option>
+                            <option value="bat">Bat First</option>
+                            <option value="bowl">Bowl First</option>
+                        </select>
+                    </div>
+
+                    <div class="players-section">
+                        <h3>Team Players (Optional)</h3>
+                        <div class="form-row">
+                            <div class="team-players">
+                                <h4 id="team1PlayersTitle">Team 1 Players</h4>
+                                <div id="team1Players" class="players-list">
+                                    <input type="text" class="player-input" placeholder="Player 1" data-team="1" data-player="0">
+                                    <input type="text" class="player-input" placeholder="Player 2" data-team="1" data-player="1">
+                                    <input type="text" class="player-input" placeholder="Player 3" data-team="1" data-player="2">
+                                    <input type="text" class="player-input" placeholder="Player 4" data-team="1" data-player="3">
+                                    <input type="text" class="player-input" placeholder="Player 5" data-team="1" data-player="4">
+                                    <input type="text" class="player-input" placeholder="Player 6" data-team="1" data-player="5">
+                                    <input type="text" class="player-input" placeholder="Player 7" data-team="1" data-player="6">
+                                    <input type="text" class="player-input" placeholder="Player 8" data-team="1" data-player="7">
+                                    <input type="text" class="player-input" placeholder="Player 9" data-team="1" data-player="8">
+                                    <input type="text" class="player-input" placeholder="Player 10" data-team="1" data-player="9">
+                                    <input type="text" class="player-input" placeholder="Player 11" data-team="1" data-player="10">
+                                </div>
+                            </div>
+                            <div class="team-players">
+                                <h4 id="team2PlayersTitle">Team 2 Players</h4>
+                                <div id="team2Players" class="players-list">
+                                    <input type="text" class="player-input" placeholder="Player 1" data-team="2" data-player="0">
+                                    <input type="text" class="player-input" placeholder="Player 2" data-team="2" data-player="1">
+                                    <input type="text" class="player-input" placeholder="Player 3" data-team="2" data-player="2">
+                                    <input type="text" class="player-input" placeholder="Player 4" data-team="2" data-player="3">
+                                    <input type="text" class="player-input" placeholder="Player 5" data-team="2" data-player="4">
+                                    <input type="text" class="player-input" placeholder="Player 6" data-team="2" data-player="5">
+                                    <input type="text" class="player-input" placeholder="Player 7" data-team="2" data-player="6">
+                                    <input type="text" class="player-input" placeholder="Player 8" data-team="2" data-player="7">
+                                    <input type="text" class="player-input" placeholder="Player 9" data-team="2" data-player="8">
+                                    <input type="text" class="player-input" placeholder="Player 10" data-team="2" data-player="9">
+                                    <input type="text" class="player-input" placeholder="Player 11" data-team="2" data-player="10">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Start Match</button>
+                </form>
+            </div>
+
+            <div id="scoringSection" class="section" style="display:none;">
+                <div class="score-display">
+                    <div class="team-score">
+                        <h2 id="battingTeamName"></h2>
+                        <div class="score-board">
+                            <span class="runs" id="totalRuns">0</span>
+                            <span class="wickets">/<span id="totalWickets">0</span></span>
+                            <span class="overs">(<span id="currentOvers">0.0</span>)</span>
+                        </div>
+                        <div class="run-rate">
+                            Run Rate: <span id="runRate">0.00</span>
+                        </div>
+                        <div class="extras-info">
+                            Extras: <span id="extrasTotal">0</span> 
+                            <span class="extras-breakdown" id="extrasBreakdown"></span>
+                        </div>
+                    </div>
+
+                    <div class="current-batsmen">
+                        <h3>Batting</h3>
+                        <div class="batsman-info">
+                            <div class="batsman">
+                                <span class="name" id="striker">Batsman 1</span>
+                                <span class="stats"><span id="strikerRuns">0</span> (<span id="strikerBalls">0</span>)</span>
+                                <button class="change-btn" id="changeStrikerBtn" onclick="cricketMatch.changeBatsmanPosition('striker')" title="Change striker" style="display:none;">↻</button>
+                            </div>
+                            <div class="batsman">
+                                <span class="name" id="nonStriker">Batsman 2</span>
+                                <span class="stats"><span id="nonStrikerRuns">0</span> (<span id="nonStrikerBalls">0</span>)</span>
+                                <button class="change-btn" id="changeNonStrikerBtn" onclick="cricketMatch.changeBatsmanPosition('nonStriker')" title="Change non-striker" style="display:none;">↻</button>
+                            </div>
+                        </div>
+                        <div class="batsman-selection">
+                            <button class="btn btn-secondary" id="selectBatterBtn" style="display:none;">Select Batter</button>
+                            <select id="batterSelect" style="display:none;">
+                                <option value="">Choose Batter</option>
+                            </select>
+                            <select id="batterChangeSelect" style="display:none;">
+                                <option value="">Choose Replacement Batter</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="current-bowler">
+                        <h3>Bowling</h3>
+                        <div class="bowler-info">
+                            <span class="name" id="currentBowler">Bowler</span>
+                            <span class="figures"><span id="bowlerOvers">0.0</span>-<span id="bowlerMaidens">0</span>-<span id="bowlerRuns">0</span>-<span id="bowlerWickets">0</span></span>
+                        </div>
+                        <div class="bowler-selection">
+                            <button class="btn btn-secondary" id="selectBowlerBtn">Select Bowler</button>
+                            <select id="bowlerSelect" style="display:none;">
+                                <option value="">Choose Bowler</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scoring-controls">
+                    <h3>Score This Ball</h3>
+                    <div class="runs-buttons">
+                        <button class="run-btn" data-runs="0">0</button>
+                        <button class="run-btn" data-runs="1">1</button>
+                        <button class="run-btn" data-runs="2">2</button>
+                        <button class="run-btn" data-runs="3">3</button>
+                        <button class="run-btn" data-runs="4">4</button>
+                        <button class="run-btn" data-runs="6">6</button>
+                    </div>
+
+                    <div class="extras-buttons">
+                        <button class="extra-btn" data-extra="wide">Wide</button>
+                        <button class="extra-btn" data-extra="noball">No Ball</button>
+                        <button class="extra-btn" data-extra="bye">Bye</button>
+                        <button class="extra-btn" data-extra="legbye">Leg Bye</button>
+                    </div>
+
+                    <div class="wicket-section">
+                        <button class="btn btn-danger" id="wicketBtn">Wicket</button>
+                        <select id="wicketType" style="display:none;">
+                            <option value="">Select Wicket Type</option>
+                            <option value="bowled">Bowled</option>
+                            <option value="caught">Caught</option>
+                            <option value="lbw">LBW</option>
+                            <option value="runout">Run Out</option>
+                            <option value="cancel">Cancel</option>
+                            <option value="stumped">Stumped</option>
+                            <option value="hitwicket">Hit Wicket</option>
+                        </select>
+                    </div>
+
+                    <div class="over-info">
+                        <h4>This Over: <span id="thisOver"></span></h4>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-warning" id="undoLastBall">↶ Undo Last Ball</button>
+                    <button class="btn btn-secondary" id="endOver">End Over</button>
+                    <button class="btn btn-secondary" id="endInnings">End Innings</button>
+                    <button class="btn btn-primary" id="viewScorecard">View Scorecard</button>
+                </div>
+            </div>
+
+            <div id="scorecardSection" class="section" style="display:none;">
+                <h2>Scorecard</h2>
+                <div id="matchResultSection" class="match-result-section" style="display:none;">
+                    <div class="winner-announcement">
+                        <div class="trophy-icon">🏆</div>
+                        <h2 id="winnerTeam">-</h2>
+                        <p id="matchResult">-</p>
+                    </div>
+                </div>
+                <div id="scorecardContent"></div>
+                <div id="awardsSection" class="awards-section">
+                    <h3>Match Awards</h3>
+                    <div class="awards-grid">
+                        <div class="award-item">
+                            <div class="award-icon">🏏</div>
+                            <h4>Best Batter</h4>
+                            <p class="award-winner" id="bestBatter">-</p>
+                            <p class="award-stats" id="bestBatterStats">-</p>
+                        </div>
+                        <div class="award-item">
+                            <div class="award-icon">🎯</div>
+                            <h4>Best Bowler</h4>
+                            <p class="award-winner" id="bestBowler">-</p>
+                            <p class="award-stats" id="bestBowlerStats">-</p>
+                        </div>
+                        <div class="award-item">
+                            <div class="award-icon">⭐</div>
+                            <h4>Man of the Match</h4>
+                            <p class="award-winner" id="manOfMatch">-</p>
+                            <p class="award-stats" id="manOfMatchReason">-</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="backToScoring">Back to Scoring</button>
+                <button class="btn btn-secondary" id="saveMatch">Save Match</button>
+                <button class="btn btn-success" id="shareScorecard">Share Scorecard</button>
+            </div>
+
+            <div id="historySection" class="section" style="display:none;">
+                <h2>Match History</h2>
+                <div id="seriesAwards" class="awards-section" style="display:none;">
+                    <h3>Series Awards</h3>
+                    <div class="awards-grid">
+                        <div class="award-item">
+                            <div class="award-icon">🏆</div>
+                            <h4>Man of the Series</h4>
+                            <p class="award-winner" id="manOfSeries">-</p>
+                            <p class="award-stats" id="manOfSeriesStats">-</p>
+                        </div>
+                        <div class="award-item">
+                            <div class="award-icon">🏏</div>
+                            <h4>Leading Run Scorer</h4>
+                            <p class="award-winner" id="leadingRunScorer">-</p>
+                            <p class="award-stats" id="leadingRunScorerStats">-</p>
+                        </div>
+                        <div class="award-item">
+                            <div class="award-icon">🎯</div>
+                            <h4>Leading Wicket Taker</h4>
+                            <p class="award-winner" id="leadingWicketTaker">-</p>
+                            <p class="award-stats" id="leadingWicketTakerStats">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="matchHistory">
+                    <p>No saved matches yet. Complete and save a match to see it here.</p>
+                </div>
+                <button class="btn btn-primary" id="newMatch">Start New Match</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/cricket.js"></script>
+</body>
+</html>

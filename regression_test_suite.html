@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Scorecard - Regression Test Suite</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #1a472a;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #2c5530;
+            margin-top: 30px;
+            border-bottom: 2px solid #1a472a;
+            padding-bottom: 10px;
+        }
+        .test-category {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-case {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-case.pass {
+            border-left-color: #28a745;
+            background-color: #d4edda;
+        }
+        .test-case.fail {
+            border-left-color: #dc3545;
+            background-color: #f8d7da;
+        }
+        .test-case.pending {
+            border-left-color: #ffc107;
+            background-color: #fff3cd;
+        }
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .test-id {
+            font-weight: bold;
+            color: #1a472a;
+        }
+        .test-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-pass {
+            background: #28a745;
+            color: white;
+        }
+        .status-fail {
+            background: #dc3545;
+            color: white;
+        }
+        .status-pending {
+            background: #ffc107;
+            color: #212529;
+        }
+        .test-steps {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .test-steps li {
+            margin: 5px 0;
+        }
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .summary-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .action-buttons {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-primary {
+            background-color: #1a472a;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #245a37;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .new-feature {
+            background-color: #e7f3ff;
+            border-left-color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cricket Scorecard - Regression Test Suite</h1>
+    
+    <div class="summary">
+        <h2>Test Summary</h2>
+        <div class="summary-stats">
+            <div class="stat-item">
+                <span class="stat-value" id="totalTests">0</span>
+                <span class="stat-label">Total Tests</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" style="color: #28a745;" id="passedTests">0</span>
+                <span class="stat-label">Passed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" style="color: #dc3545;" id="failedTests">0</span>
+                <span class="stat-label">Failed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" style="color: #ffc107;" id="pendingTests">0</span>
+                <span class="stat-label">Pending</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="btn btn-primary" onclick="window.open('index.html', '_blank')">Open Cricket App</button>
+        <button class="btn btn-secondary" onclick="window.open('tournament.html', '_blank')">Open Tournament Mode</button>
+    </div>
+
+    <!-- Test Categories -->
+    
+    <div class="test-category">
+        <h2>1. Match Setup Tests</h2>
+        
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_001</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Create T20 match with all fields
+                <ol class="test-steps">
+                    <li>Select T20 format</li>
+                    <li>Enter team names</li>
+                    <li>Select toss winner and decision</li>
+                    <li>Add all 11 players for both teams</li>
+                    <li>Click Start Match</li>
+                    <li>Verify navigation shows and scoring section appears</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_002</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Custom overs validation
+                <ol class="test-steps">
+                    <li>Select Custom format</li>
+                    <li>Try negative overs - should show validation</li>
+                    <li>Try 0 overs - should show validation</li>
+                    <li>Enter 10 overs - should accept</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending new-feature">
+            <div class="test-header">
+                <span class="test-id">RT_003</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Start New Match button in header
+                <ol class="test-steps">
+                    <li>Start a match and reach scoring</li>
+                    <li>Click "Start New Match" in header</li>
+                    <li>Confirm new match</li>
+                    <li>Verify returns to setup with cleared data</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-category">
+        <h2>2. Live Scoring Tests</h2>
+        
+        <div class="test-case pending new-feature">
+            <div class="test-header">
+                <span class="test-id">RT_004</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Select Batter functionality
+                <ol class="test-steps">
+                    <li>Start match and verify "Select Opening Batsmen" button appears</li>
+                    <li>Click button and select striker from dropdown</li>
+                    <li>Verify button changes to "Select Non-Striker"</li>
+                    <li>Select non-striker</li>
+                    <li>Verify button disappears and scoring is enabled</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending new-feature">
+            <div class="test-header">
+                <span class="test-id">RT_005</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Change batsman feature
+                <ol class="test-steps">
+                    <li>Select opening batsmen</li>
+                    <li>Verify ↻ buttons appear next to both batsmen</li>
+                    <li>Click ↻ for striker</li>
+                    <li>Select different player from dropdown</li>
+                    <li>Verify player is changed</li>
+                    <li>Score a run and verify ↻ buttons disappear</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_006</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Scoring runs and rotation
+                <ol class="test-steps">
+                    <li>Score 1 run - verify strike rotates</li>
+                    <li>Score 2 runs - verify strike doesn't rotate</li>
+                    <li>Score 4 and 6 - verify boundaries work</li>
+                    <li>End over - verify strike rotates</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_007</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Extras handling
+                <ol class="test-steps">
+                    <li>Score wide - verify 1 run added, ball not counted</li>
+                    <li>Score no ball - verify 1 run added, free hit next</li>
+                    <li>Score bye - verify run added, ball counted</li>
+                    <li>Score leg bye - verify run added, ball counted</li>
+                    <li>Check extras breakdown display</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_008</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Wicket handling
+                <ol class="test-steps">
+                    <li>Take wicket - select bowled</li>
+                    <li>Select new batsman</li>
+                    <li>Take run out wicket</li>
+                    <li>Verify wicket count updates</li>
+                    <li>Test cancel option in wicket dropdown</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_009</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Bowler selection and rotation
+                <ol class="test-steps">
+                    <li>Select first bowler</li>
+                    <li>Complete over</li>
+                    <li>Try selecting same bowler - should not be allowed</li>
+                    <li>Select different bowler</li>
+                    <li>Verify bowler stats update correctly</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_010</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Undo functionality
+                <ol class="test-steps">
+                    <li>Score runs and take wicket</li>
+                    <li>Use undo - verify last action reversed</li>
+                    <li>Complete match</li>
+                    <li>Verify undo is disabled after match ends</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-category">
+        <h2>3. Scorecard & Awards Tests</h2>
+        
+        <div class="test-case pending new-feature">
+            <div class="test-header">
+                <span class="test-id">RT_011</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Name editing on scorecard
+                <ol class="test-steps">
+                    <li>Complete an innings and view scorecard</li>
+                    <li>Click edit button (✎) next to player name</li>
+                    <li>Change name and press Enter</li>
+                    <li>Verify name is updated</li>
+                    <li>Test clicking away to cancel edit</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_012</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Awards calculation
+                <ol class="test-steps">
+                    <li>Complete a match</li>
+                    <li>Verify Best Batter award (highest runs)</li>
+                    <li>Verify Best Bowler award (best figures)</li>
+                    <li>Verify Man of the Match selection</li>
+                    <li>Check winning team highlighting</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_013</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Match result scenarios
+                <ol class="test-steps">
+                    <li>Test team batting first wins</li>
+                    <li>Test team batting second wins</li>
+                    <li>Test tie match (same scores)</li>
+                    <li>Test match ending on last ball</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-category">
+        <h2>4. Navigation & History Tests</h2>
+        
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_014</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Navigation functionality
+                <ol class="test-steps">
+                    <li>Test all navigation buttons</li>
+                    <li>Verify active state highlighting</li>
+                    <li>Verify state preservation when switching tabs</li>
+                    <li>Test browser refresh - verify active match loads</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_015</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Match history
+                <ol class="test-steps">
+                    <li>Save multiple matches</li>
+                    <li>Verify all appear in history</li>
+                    <li>Load a saved match</li>
+                    <li>Verify series awards calculation</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_016</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Share functionality
+                <ol class="test-steps">
+                    <li>Complete match and view scorecard</li>
+                    <li>Click Share Scorecard</li>
+                    <li>Verify clipboard copy works</li>
+                    <li>Verify fallback for older browsers</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-category">
+        <h2>5. Tournament Mode Tests</h2>
+        
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_017</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Tournament creation
+                <ol class="test-steps">
+                    <li>Click Tournament Mode button</li>
+                    <li>Create tournament with 4 teams</li>
+                    <li>Set valid date range</li>
+                    <li>Verify fixtures generated correctly</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_018</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Tournament match flow
+                <ol class="test-steps">
+                    <li>Start match from tournament</li>
+                    <li>Complete match</li>
+                    <li>Return to tournament</li>
+                    <li>Verify match result shows in fixtures</li>
+                    <li>Verify points table updates</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_019</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Tournament awards
+                <ol class="test-steps">
+                    <li>Complete all tournament matches</li>
+                    <li>View Awards tab</li>
+                    <li>Verify tournament awards show correctly</li>
+                    <li>Verify individual match awards preserved</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-category">
+        <h2>6. Edge Cases & Error Handling</h2>
+        
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_020</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> All out scenarios
+                <ol class="test-steps">
+                    <li>Get 10 wickets in first innings</li>
+                    <li>Verify innings ends automatically</li>
+                    <li>Get 9 wickets and try to continue</li>
+                    <li>Verify can't select same batsman twice</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_021</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Data validation
+                <ol class="test-steps">
+                    <li>Try duplicate team names</li>
+                    <li>Try empty player names</li>
+                    <li>Try special characters in names</li>
+                    <li>Test very long names</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="test-case pending">
+            <div class="test-header">
+                <span class="test-id">RT_022</span>
+                <span class="test-status status-pending">Pending</span>
+            </div>
+            <div class="test-description">
+                <strong>Test:</strong> Browser compatibility
+                <ol class="test-steps">
+                    <li>Test in Chrome</li>
+                    <li>Test in Safari</li>
+                    <li>Test in Firefox</li>
+                    <li>Test localStorage limits</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Calculate and display test statistics
+        function updateStats() {
+            const allTests = document.querySelectorAll('.test-case');
+            const passedTests = document.querySelectorAll('.test-case.pass');
+            const failedTests = document.querySelectorAll('.test-case.fail');
+            const pendingTests = document.querySelectorAll('.test-case.pending');
+            
+            document.getElementById('totalTests').textContent = allTests.length;
+            document.getElementById('passedTests').textContent = passedTests.length;
+            document.getElementById('failedTests').textContent = failedTests.length;
+            document.getElementById('pendingTests').textContent = pendingTests.length;
+        }
+        
+        // Update stats on page load
+        updateStats();
+        
+        // Function to mark test as complete (for manual testing)
+        function markTest(testId, status) {
+            const testCase = document.querySelector(`[class*="${testId}"]`).closest('.test-case');
+            testCase.classList.remove('pending', 'pass', 'fail');
+            testCase.classList.add(status);
+            
+            const statusElement = testCase.querySelector('.test-status');
+            statusElement.classList.remove('status-pending', 'status-pass', 'status-fail');
+            statusElement.classList.add(`status-${status}`);
+            statusElement.textContent = status.toUpperCase();
+            
+            updateStats();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Tournament Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/tournament.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏏 Cricket Tournament Manager</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">Single Match</button>
+                <button class="btn btn-secondary" onclick="tournamentManager.loadTournaments()">Load Tournament</button>
+            </div>
+        </header>
+
+        <!-- Tournament Setup Section -->
+        <section id="tournamentSetup" class="section">
+            <h2>Create New Tournament</h2>
+            
+            <form id="tournamentSetupForm">
+                <div class="form-group">
+                    <label>Tournament Name:</label>
+                    <input type="text" id="tournamentName" placeholder="e.g., IPL 2024, World Cup" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date:</label>
+                        <input type="date" id="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Date:</label>
+                        <input type="date" id="endDate" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tournament Format:</label>
+                    <select id="tournamentFormat" required>
+                        <option value="">Select Format</option>
+                        <option value="league">League (Round Robin)</option>
+                        <option value="knockout">Knockout</option>
+                        <option value="mixed">Mixed (Groups + Knockout)</option>
+                    </select>
+                    <div id="formatDescription" class="format-description"></div>
+                </div>
+
+                <div class="teams-section">
+                    <h3>Teams</h3>
+                    <div id="teamsContainer">
+                        <div class="form-group">
+                            <input type="text" class="team-input" placeholder="Team 1 Name" required onblur="tournamentManager.checkDuplicateTeams()">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="team-input" placeholder="Team 2 Name" required onblur="tournamentManager.checkDuplicateTeams()">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="team-input" placeholder="Team 3 Name" required onblur="tournamentManager.checkDuplicateTeams()">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="team-input" placeholder="Team 4 Name" required onblur="tournamentManager.checkDuplicateTeams()">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="addTeamBtn">Add Team</button>
+                </div>
+
+                <div class="tournament-settings">
+                    <h3>Tournament Settings</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Match Format:</label>
+                            <select id="matchFormat">
+                                <option value="T20">T20 (20 overs)</option>
+                                <option value="ODI">ODI (50 overs)</option>
+                                <option value="T10">T10 (10 overs)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Teams to Qualify:</label>
+                            <input type="number" id="qualifyingTeams" value="4" min="2" max="8">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Tournament</button>
+            </form>
+        </section>
+
+        <!-- Tournament Dashboard -->
+        <section id="tournamentDashboard" class="section" style="display:none;">
+            <div class="tournament-header">
+                <h2 id="tournamentTitle"></h2>
+                <p id="tournamentDates"></p>
+                <div class="tournament-actions">
+                    <button class="btn btn-secondary" onclick="tournamentManager.exportTournamentData()">Export Data</button>
+                    <button class="btn btn-secondary" onclick="window.location.reload()">New Tournament</button>
+                </div>
+            </div>
+
+            <!-- Tournament Stats Overview -->
+            <div class="stats-overview">
+                <div class="stat-box">
+                    <h4>Total Matches</h4>
+                    <div class="stat-number" id="totalMatches">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Completed</h4>
+                    <div class="stat-number" id="completedMatches">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Upcoming</h4>
+                    <div class="stat-number" id="upcomingMatches">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Current Stage</h4>
+                    <div class="stat-number" id="currentStage">Group</div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="tournament-tabs">
+                <button class="tab-btn active" onclick="showTab('pointsTable')">Points Table</button>
+                <button class="tab-btn" onclick="showTab('fixtures')">Fixtures</button>
+                <button class="tab-btn" onclick="showTab('stats')">Statistics</button>
+                <button class="tab-btn" onclick="showTab('teams')">Teams</button>
+                <button class="tab-btn" onclick="showTab('awards')">Awards</button>
+            </div>
+
+            <!-- Points Table Tab -->
+            <div id="pointsTableTab" class="tab-content active">
+                <h3>Points Table</h3>
+                <div class="table-responsive">
+                    <table class="points-table">
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>Team</th>
+                                <th>P</th>
+                                <th>W</th>
+                                <th>L</th>
+                                <th>T</th>
+                                <th>NR</th>
+                                <th>Pts</th>
+                                <th>NRR</th>
+                                <th>Form</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pointsTableBody">
+                            <!-- Points table rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-legend">
+                    <span><strong>P:</strong> Played</span>
+                    <span><strong>W:</strong> Won</span>
+                    <span><strong>L:</strong> Lost</span>
+                    <span><strong>T:</strong> Tied</span>
+                    <span><strong>NR:</strong> No Result</span>
+                    <span><strong>NRR:</strong> Net Run Rate</span>
+                </div>
+            </div>
+
+            <!-- Fixtures Tab -->
+            <div id="fixturesTab" class="tab-content">
+                <h3>Fixtures & Results</h3>
+                <div id="fixturesList">
+                    <!-- Fixtures will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Statistics Tab -->
+            <div id="statsTab" class="tab-content">
+                <h3>Tournament Statistics</h3>
+                <div id="tournamentStats">
+                    <!-- Stats will be inserted here -->
+                </div>
+                
+                <div class="stats-categories">
+                    <div class="stat-category">
+                        <h4>Batting Statistics</h4>
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Team</th>
+                                    <th>Matches</th>
+                                    <th>Runs</th>
+                                    <th>Average</th>
+                                    <th>SR</th>
+                                    <th>HS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="battingStatsBody">
+                                <!-- Batting stats will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="stat-category">
+                        <h4>Bowling Statistics</h4>
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Team</th>
+                                    <th>Matches</th>
+                                    <th>Wickets</th>
+                                    <th>Average</th>
+                                    <th>Economy</th>
+                                    <th>Best</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bowlingStatsBody">
+                                <!-- Bowling stats will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teams Tab -->
+            <div id="teamsTab" class="tab-content">
+                <h3>Teams & Squads</h3>
+                <div id="teamsList" class="teams-grid">
+                    <!-- Team cards will be inserted here -->
+                </div>
+            </div>
+            
+            <!-- Awards Tab -->
+            <div id="awardsTab" class="tab-content">
+                <h3>Tournament Awards</h3>
+                <div id="tournamentAwards" class="awards-container">
+                    <!-- Tournament awards will be displayed here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Saved Tournaments -->
+        <section id="savedTournaments" class="section" style="display:none;">
+            <h2>Saved Tournaments</h2>
+            <div id="tournamentsList">
+                <!-- Saved tournaments will be listed here -->
+            </div>
+        </section>
+    </div>
+
+    <script src="js/tournament.js"></script>
+    <script>
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            event.target.classList.add('active');
+            
+            // If awards tab is selected, display tournament awards
+            if (tabName === 'awards') {
+                tournamentManager.displayTournamentAwards();
+            }
+        }
+        
+        // Check if returning from a match
+        window.addEventListener('load', () => {
+            const activeTournament = localStorage.getItem('activeTournament');
+            if (activeTournament) {
+                tournamentManager.tournament = JSON.parse(activeTournament);
+                tournamentManager.showTournamentDashboard();
+            }
+        });
+    </script>
+</body>
+</html>

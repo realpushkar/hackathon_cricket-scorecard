@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Execute Regression Tests - Cricket Scorecard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .test-results {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 600px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        .test-pass { color: #4ec9b0; }
+        .test-fail { color: #f48771; }
+        .test-header { color: #dcdcaa; font-weight: bold; }
+        .test-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cricket Scorecard - Regression Test Execution</h1>
+        </header>
+
+        <div class="test-summary" id="summary">
+            <h2>Test Summary</h2>
+            <p>Click "Run Tests" to execute all regression tests</p>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="btn btn-primary" onclick="runTests()">Run Tests</button>
+            <button class="btn btn-secondary" onclick="window.location.href='regression_test_suite.html'">View Manual Tests</button>
+        </div>
+
+        <div class="test-results" id="results">
+            Test results will appear here...
+        </div>
+    </div>
+
+    <!-- Load Cricket app components -->
+    <script src="js/cricket.js"></script>
+    <script src="regression_test_runner.js"></script>
+    
+    <script>
+        async function runTests() {
+            const resultsDiv = document.getElementById('results');
+            const summaryDiv = document.getElementById('summary');
+            
+            resultsDiv.innerHTML = '';
+            
+            // Capture console output
+            const logs = [];
+            const originalLog = console.log;
+            const originalError = console.error;
+            
+            console.log = function(...args) {
+                originalLog.apply(console, args);
+                const message = args.join(' ');
+                const div = document.createElement('div');
+                
+                if (message.includes('✅')) {
+                    div.className = 'test-pass';
+                } else if (message.includes('❌')) {
+                    div.className = 'test-fail';
+                } else if (message.includes('🏏') || message.includes('📋') || message.includes('📊')) {
+                    div.className = 'test-header';
+                }
+                
+                div.textContent = message;
+                resultsDiv.appendChild(div);
+                resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            };
+            
+            console.error = function(...args) {
+                originalError.apply(console, args);
+                const div = document.createElement('div');
+                div.className = 'test-fail';
+                div.textContent = 'ERROR: ' + args.join(' ');
+                resultsDiv.appendChild(div);
+            };
+            
+            try {
+                const runner = new RegressionTestRunner();
+                await runner.runAllTests();
+                
+                // Update summary
+                summaryDiv.innerHTML = `
+                    <h2>Test Summary</h2>
+                    <div style="margin: 20px 0;">
+                        <p style="font-size: 24px;">
+                            Total: ${runner.results.total} | 
+                            <span style="color: #28a745;">Passed: ${runner.results.passed}</span> | 
+                            <span style="color: #dc3545;">Failed: ${runner.results.failed}</span>
+                        </p>
+                        <p style="font-size: 20px;">
+                            Success Rate: ${((runner.results.passed / runner.results.total) * 100).toFixed(1)}%
+                        </p>
+                    </div>
+                `;
+                
+                if (runner.results.failed === 0) {
+                    summaryDiv.innerHTML += '<p style="color: #28a745; font-size: 20px; font-weight: bold;">🎉 All tests passed!</p>';
+                } else {
+                    summaryDiv.innerHTML += '<p style="color: #dc3545; font-size: 20px; font-weight: bold;">⚠️ Some tests failed. Check the results below.</p>';
+                }
+                
+            } catch (error) {
+                console.error('Test execution failed:', error);
+            } finally {
+                // Restore console
+                console.log = originalLog;
+                console.error = originalError;
+            }
+        }
+    </script>
+</body>
+</html>

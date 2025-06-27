@@ -1,0 +1,27 @@
+# Test files
+*.py
+test*.html
+debug.html
+bug-check.html
+
+# Excel files
+*.xlsx
+
+# Test scripts
+AUTOMATED_TEST_SCRIPT.js
+execute_*.py
+
+# Documentation files (keeping only essential ones)
+*_summary.md
+TEST_*.md
+BUG_*.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
